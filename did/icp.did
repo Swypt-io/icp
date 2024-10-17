@@ -1,0 +1,27 @@
+type Error = variant {
+    BalanceLow;
+    TransferFailed;
+};
+
+type Success = null;
+
+type Response = variant {
+    Err: Error;
+    Ok: Success;
+};
+
+type WithdrawArgs = record {
+    token: principal;
+    amount: nat;
+    to: principal;
+};
+
+type Escrow = 
+service {
+    whoami: () -> (principal) query;
+    deposit: (principal) -> (Response);
+    withdraw: (WithdrawArgs) -> (Response);
+    getDepositAddress: () -> (blob);
+};
+
+service: (ledger: opt principal) -> Escrow
